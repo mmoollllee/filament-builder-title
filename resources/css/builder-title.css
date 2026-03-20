@@ -1,0 +1,39 @@
+.fi-builder-title-wrapper {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    max-width: 100%;
+}
+
+.fi-builder-title-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+    min-width: 2ch;
+    max-width: 100%;
+    field-sizing: content;
+}
+
+@supports (field-sizing: content) {
+    .fi-builder-title-input {
+        width: auto !important;
+    }
+}
+
+.fi-builder-title-input:focus {
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.fi-builder-title-input::placeholder {
+    color: inherit;
+    opacity: 0.5;
+}
+
+.fi-builder-title-suffix {
+    opacity: 0.5;
+    white-space: nowrap;
+}
