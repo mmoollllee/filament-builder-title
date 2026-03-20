@@ -40,9 +40,18 @@
         autocomplete="off"
         name="fi-builder-title-{{ uniqid() }}"
         role="presentation"
-        class="fi-builder-title-input"
+        @class([
+            'fi-builder-title-input',
+            'fi-builder-title-input-error' => ! empty($error),
+        ])
+        @if (! empty($error))
+            title="{{ $error }}"
+        @endif
     />
     @if ($suffix)
         <span class="fi-builder-title-suffix">{{ $suffix }}</span>
+    @endif
+    @if (! empty($error))
+        <span class="fi-builder-title-error">{{ $error }}</span>
     @endif
 </label>

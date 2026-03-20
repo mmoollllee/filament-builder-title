@@ -1,0 +1,25 @@
+providers:
+  - Mmoollllee\FilamentBuilderTitle\FilamentBuilderTitleServiceProvider
+  - Workbench\App\Providers\AdminPanelProvider
+
+migrations: true
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: /admin/login
+  install: true
+  discovers:
+    web: true
+    commands: false
+    components: false
+    factories: true
+    views: true
+  build:
+    - asset-publish
+    - create-sqlite-db
+    - migrate-fresh
+    - filament-assets
+  assets:
+    - laravel-assets

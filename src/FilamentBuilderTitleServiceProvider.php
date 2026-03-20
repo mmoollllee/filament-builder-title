@@ -63,12 +63,22 @@ class FilamentBuilderTitleServiceProvider extends PackageServiceProvider
                     ? "{$builderStatePath}.{$key}.data.{$field}"
                     : null;
 
+                $error = null;
+                if ($wireModel !== null) {
+                    try {
+                        $errorBag = $this->getLivewire()->getErrorBag();
+                        $error = $errorBag->first($wireModel) ?: null;
+                    } catch (\Throwable) {
+                    }
+                }
+
                 return new HtmlString(
                     view('filament-builder-title::title-input', [
                         'wireModel' => $wireModel,
                         'field' => $field,
                         'placeholder' => $displayPlaceholder,
                         'suffix' => $suffix,
+                        'error' => $error,
                     ])->render()
                 );
             });

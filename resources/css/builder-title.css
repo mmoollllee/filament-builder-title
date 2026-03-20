@@ -1,3 +1,13 @@
+.fi-fo-builder-item-header-label:has(.fi-builder-title-wrapper) {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+}
+
+.fi-fo-builder-item-header-label .fi-builder-title-wrapper {
+    order: 1;
+}
+
 .fi-builder-title-wrapper {
     display: inline-flex;
     align-items: baseline;
@@ -35,5 +45,21 @@
 
 .fi-builder-title-suffix {
     opacity: 0.5;
+    white-space: nowrap;
+}
+
+.fi-builder-title-input-error {
+    border-bottom: 1px solid rgb(239 68 68) !important;
+    color: rgb(239 68 68);
+}
+
+.fi-builder-title-input-error::placeholder {
+    color: rgb(239 68 68);
+    opacity: 0.7;
+}
+
+.fi-builder-title-error {
+    color: rgb(239 68 68);
+    font-size: 0.75em;
     white-space: nowrap;
 }

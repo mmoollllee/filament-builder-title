@@ -2,6 +2,8 @@
 
 Editable title input directly in Filament Builder block headers. Instead of a static label, users can type a title right in the header bar — no need to open the block.
 
+![Screenshot](docs/screenshot.png)
+
 ## Requirements
 
 - PHP 8.2+
@@ -55,10 +57,9 @@ This renders an inline text input in the block header that writes directly to th
 
 ## Features
 
-- **Inline editing** — Title is editable directly in the block header, even when collapsed
-- **Auto-resize** — Input width grows with its content
-- **Suffix label** — Optional static text after the input (clickable, focuses input)
-- **Block picker compatible** — Shows placeholder text in the block picker dropdown
+- **Inline editing** — Title is editable directly in the block header, even when collapsed or with enabled previews
+- **Auto-resize** — Input width grows with its content (via `field-sizing: content` if supported)
+- **Suffix label/Block Label** — Optional static text after the input (clickable, focuses input)
 - **No view override** — Uses Filament's `Htmlable` label support, no Builder Blade override needed
 - **Collapse-safe** — Click events are stopped so typing doesn't toggle block collapse
 
@@ -69,6 +70,28 @@ The package registers a `title()` macro on `Filament\Forms\Components\Builder\Bl
 The macro sets a `->label()` closure that returns an `HtmlString` containing an `<input>` element. The input is bound to Livewire state via Alpine's `$wire.$entangle()`, which provides two-way data binding without triggering extra network requests.
 
 The state path is resolved by navigating the component tree: `Block → getContainer() → getParentComponent() → getStatePath()` to find the parent Builder's state path, then constructing the full path as `{builderStatePath}.{itemKey}.data.{field}`.
+
+## Local Development & Live-Demo
+
+To test the plugin locally with a full Filament panel, the package includes an [Orchestra Testbench](https://packages.tools/testbench) workbench setup.
+
+```bash
+# Install dependencies
+composer install
+
+# Start the development server (runs migrations, seeds, and publishes assets automatically)
+composer serve
+```
+
+Open [http://localhost:8000/login](http://localhost:8000/login) and log in with prefilled credentials.
+
+The "Builder Title Demo" page in the sidebar shows a Builder with `->title()` blocks.
+
+### Running Tests
+
+```bash
+composer test
+```
 
 ## Publishing Views
 
