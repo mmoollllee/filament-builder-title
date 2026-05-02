@@ -21,16 +21,6 @@ class BlockTitleMacroTest extends TestCase
         $this->assertInstanceOf(Block::class, $block);
     }
 
-    public function test_title_macro_stores_meta(): void
-    {
-        $block = Block::make('test')
-            ->schema([TextInput::make('heading')])
-            ->title('heading', placeholder: 'Enter title', suffix: ' Block');
-
-        $this->assertSame('heading', $block->getMeta('titleField'));
-        $this->assertSame(' Block', $block->getMeta('titleSuffix'));
-    }
-
     public function test_label_returns_fallback_without_state(): void
     {
         $block = Block::make('hero_section')

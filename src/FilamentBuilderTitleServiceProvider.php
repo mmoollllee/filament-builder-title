@@ -34,16 +34,11 @@ class FilamentBuilderTitleServiceProvider extends PackageServiceProvider
     {
         Block::macro('title', function (string $field, ?string $placeholder = null, ?string $suffix = null): static {
             /** @var Block $this */
-            $this->meta('titleField', $field);
-            $this->meta('titleSuffix', $suffix);
-
             $this->label(function (?array $state, ?string $key) use ($field, $placeholder, $suffix): string|Htmlable {
                 $fallback = (string) str($this->getName())
                     ->kebab()
                     ->replace(['-', '_'], ' ')
                     ->ucfirst();
-
-                $displayPlaceholder = $placeholder ?? $fallback;
 
                 // Block picker context: no state or key available
                 if ($state === null || $key === null) {
@@ -51,32 +46,26 @@ class FilamentBuilderTitleServiceProvider extends PackageServiceProvider
                 }
 
                 // Navigate: Block → BuilderChildSchema → Builder
-                $builderStatePath = null;
+                $builderStatePath = $this->getContainer()
+                    ?->getParentComponent()
+                    ?->getStatePath();
 
-                if (isset($this->container)) {
-                    $builderStatePath = $this->getContainer()
-                        ?->getParentComponent()
-                        ?->getStatePath();
+                if ($builderStatePath === null) {
+                    return $fallback;
                 }
 
-                $wireModel = $builderStatePath !== null
-                    ? "{$builderStatePath}.{$key}.data.{$field}"
-                    : null;
+                $wireModel = "{$builderStatePath}.{$key}.data.{$field}";
 
                 $error = null;
-                if ($wireModel !== null) {
-                    try {
-                        $errorBag = $this->getLivewire()->getErrorBag();
-                        $error = $errorBag->first($wireModel) ?: null;
-                    } catch (\Throwable) {
-                    }
+                try {
+                    $error = $this->getLivewire()->getErrorBag()->first($wireModel) ?: null;
+                } catch (\Throwable) {
                 }
 
                 return new HtmlString(
                     view('filament-builder-title::title-input', [
                         'wireModel' => $wireModel,
-                        'field' => $field,
-                        'placeholder' => $displayPlaceholder,
+                        'placeholder' => $placeholder ?? $fallback,
                         'suffix' => $suffix,
                         'error' => $error,
                     ])->render()

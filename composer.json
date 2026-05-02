@@ -3,10 +3,24 @@
     "description": "Editable title input in Filament Builder block headers",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "filamentphp",
+        "laravel",
+        "builder",
+        "block",
+        "title",
+        "inline-edit"
+    ],
+    "authors": [
+        {
+            "name": "Moritz Graf",
+            "email": "mg@moritz-graf.de"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "filament/forms": "^5.0",
-        "spatie/laravel-package-tools": "^1.0"
+        "spatie/laravel-package-tools": "^1.16"
     },
     "autoload": {
         "psr-4": {
@@ -22,8 +36,8 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^10.0",
-        "phpunit/phpunit": "^11.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0",
         "filament/filament": "^5.0"
     },
     "extra": {
