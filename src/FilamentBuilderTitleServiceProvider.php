@@ -45,7 +45,14 @@ class FilamentBuilderTitleServiceProvider extends PackageServiceProvider
                     return $fallback;
                 }
 
-                // Navigate: Block → BuilderChildSchema → Builder
+                // Navigate: Block → BuilderChildSchema → Builder.
+                // Guard isset() because $container is a typed-non-null property:
+                // accessing it before it's bound throws "must not be accessed
+                // before initialization" — and the ?-> chain doesn't catch that.
+                if (! isset($this->container)) {
+                    return $fallback;
+                }
+
                 $builderStatePath = $this->getContainer()
                     ?->getParentComponent()
                     ?->getStatePath();
