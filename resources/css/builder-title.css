@@ -1,10 +1,13 @@
-.fi-fo-builder-item-header-label:has(.fi-builder-title-wrapper) {
+.fi-fo-builder-item-header-label:has(.fi-builder-title-wrapper),
+.fi-fo-repeater-item-header-label:has(.fi-builder-title-wrapper) {
     display: inline-flex;
     align-items: baseline;
     gap: 0.35em;
+    flex: 1 1 auto;
 }
 
-.fi-fo-builder-item-header-label .fi-builder-title-wrapper {
+.fi-fo-builder-item-header-label .fi-builder-title-wrapper,
+.fi-fo-repeater-item-header-label .fi-builder-title-wrapper {
     order: 1;
 }
 

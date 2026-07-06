@@ -1,6 +1,6 @@
 # Filament Builder Title
 
-Editable title input directly in Filament Builder block headers. Instead of a static label, users can type a title right in the header bar — no need to open the block.
+Editable title input directly in Filament **Builder block** and **Repeater row** headers. Instead of a static label, users can type a title right in the header bar.
 
 ![Screenshot](docs/screenshot.png)
 
@@ -34,6 +34,27 @@ Block::make('section_header')
 
 This renders an inline text input in the block header that writes directly to the `heading` field.
 
+### Repeater rows
+
+The same `->title()` macro works on `Filament\Forms\Components\Repeater`, replacing the read-only `->itemLabel()` with an editable input in each row header:
+
+```php
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
+
+Repeater::make('specs')
+    ->schema([
+        Hidden::make('label'),
+        TextInput::make('value'),
+    ])
+    ->title('label', placeholder: 'Row label')
+```
+
+Signature and rules are identical to the Block macro (bind a `Hidden::make()` field; do not also set `->itemLabel()`).
+
+> **Note:** the macro drives the row header label, so it only applies to the default Repeater layout. Filament's `->table()` and `->simple()` layouts don't render an item label, so `->title()` has no effect there — keep the field visible in the schema for those layouts instead.
+
 ### Parameters
 
 ```php
@@ -65,11 +86,14 @@ This renders an inline text input in the block header that writes directly to th
 
 ## How It Works
 
-The package registers a `title()` macro on `Filament\Forms\Components\Builder\Block` via Filament's `Macroable` trait.
+The package registers a `title()` macro on both `Filament\Forms\Components\Builder\Block` and `Filament\Forms\Components\Repeater` via Filament's `Macroable` trait.
 
-The macro sets a `->label()` closure that returns an `HtmlString` containing an `<input>` element. The input is bound to Livewire state via Alpine's `$wire.$entangle()`, which provides two-way data binding without triggering extra network requests.
+The macro sets the header label (Block `->label()` / Repeater `->itemLabel()`) to a closure returning an `HtmlString` containing an `<input>` element. The input is bound to Livewire state via Alpine's `$wire.$entangle()`, which provides two-way data binding without triggering extra network requests. Both share the same `title-input` view and CSS.
 
-The state path is resolved by navigating the component tree: `Block → getContainer() → getParentComponent() → getStatePath()` to find the parent Builder's state path, then constructing the full path as `{builderStatePath}.{itemKey}.data.{field}`.
+The state path differs per component because their state shapes differ:
+
+- **Builder** wraps each block as `{ type, data: {…} }`, so the path is `{builderStatePath}.{itemKey}.data.{field}`.
+- **Repeater** rows are flat, so the row container's own state path already is `{repeaterStatePath}.{uuid}`, and the field is one level below: `{repeaterStatePath}.{uuid}.{field}` (no `.data.`).
 
 ## Local Development & Live-Demo
 
@@ -85,7 +109,7 @@ composer serve
 
 Open [http://localhost:8000/login](http://localhost:8000/login) and log in with prefilled credentials.
 
-The "Builder Title Demo" page in the sidebar shows a Builder with `->title()` blocks.
+The panel has three demo pages: "Builder Title Demo" (a Builder with `->title()` blocks), "Nested Builder Title Demo" with Block Previews and Nested Blocks and "Repeater Title Demo" (a Repeater with `->title()` rows).
 
 ### Running Tests
 
