@@ -33,6 +33,32 @@ class BlockTitleMacroTest extends TestCase
         $this->assertSame('Hero section', $label);
     }
 
+    public function test_label_keeps_a_label_configured_before_the_macro(): void
+    {
+        // The picker shows this label. ->title() replaces the block's label with
+        // its own closure, so a label set beforehand has to survive that — or a
+        // block called 'Sektion' everywhere else advertises itself as "Section".
+        $block = Block::make('section')
+            ->label('Sektion')
+            ->schema([TextInput::make('heading')])
+            ->title('heading');
+
+        $this->assertSame('Sektion', $block->getLabel(null, null));
+    }
+
+    public function test_configured_label_is_the_title_placeholder_fallback(): void
+    {
+        $block = Block::make('section')
+            ->label('Sektion')
+            ->schema([TextInput::make('heading')])
+            ->title('heading');
+
+        $this->assertStringContainsString(
+            'placeholder="Sektion"',
+            (string) $block->getLabel(['heading' => ''], 'item-uuid'),
+        );
+    }
+
     /**
      * A block used with ->preview() renders DETACHED — Filament static-renders the preview
      * instead of mounting the block schema, so the label closure runs with no bound container

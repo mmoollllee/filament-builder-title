@@ -64,8 +64,16 @@ class FilamentBuilderTitleServiceProvider extends PackageServiceProvider
     {
         Block::macro('title', function (string $field, ?string $placeholder = null, ?string $suffix = null) {
             /** @var Block $this */
-            $this->label(function (?array $state, ?string $key) use ($field, $placeholder, $suffix): string|Htmlable {
-                $fallback = (string) str($this->getName())
+
+            // The label the block was already given, captured BEFORE this macro
+            // replaces it with the title closure below. Without it a block
+            // labelled 'Sektion' would advertise itself as "Section" in the block
+            // picker — the name-derived fallback is the only thing left once the
+            // label is gone, and every caller sets ->label() before ->title().
+            $configuredLabel = is_string($this->label) ? $this->label : null;
+
+            $this->label(function (?array $state, ?string $key) use ($field, $placeholder, $suffix, $configuredLabel): string|Htmlable {
+                $fallback = $configuredLabel ?? (string) str($this->getName())
                     ->kebab()
                     ->replace(['-', '_'], ' ')
                     ->ucfirst();
