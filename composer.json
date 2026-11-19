@@ -1,6 +1,7 @@
 {
     "name": "mmoollllee/filament-builder-title",
     "description": "Editable title input in Filament Builder block headers",
+    "abandoned": "mmoollllee/filament-builder-extensions",
     "type": "library",
     "license": "MIT",
     "keywords": [

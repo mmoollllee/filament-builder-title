@@ -1,5 +1,8 @@
 # Filament Builder Title
 
+> [!WARNING]
+> **This package is abandoned.** It is replaced by [`mmoollllee/filament-builder-extensions`](https://github.com/mmoollllee/filament-builder-extensions), which keeps the `->title()` macros and adds dragging items between lists, copy and paste, and adding items from outside the field. Both packages define `->title()`, so they conflict: remove this one when you install the other. Steps: [Upgrading from filament-builder-title](https://github.com/mmoollllee/filament-builder-extensions#upgrading-from-filament-builder-title).
+
 Editable title input directly in Filament **Builder block** and **Repeater row** headers. Instead of a static label, users can type a title right in the header bar.
 
 ![Screenshot](docs/screenshot.png)
